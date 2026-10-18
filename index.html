@@ -16,32 +16,42 @@ html,body{margin:0;background:#06070f;color:#e9eaf5;font-family:'Manrope',sans-s
 *{box-sizing:border-box}
 a{color:#8b7bff;text-decoration:none}a:hover{color:#b3a8ff}
 img{display:block}
+.hs-burger{display:none;margin-left:auto;width:44px;height:44px;align-items:center;justify-content:center;border-radius:12px;border:1px solid rgba(140,120,255,.45);background:rgba(91,61,255,.12);color:#fff;font-size:20px;line-height:1;cursor:pointer}
+@media (max-width:760px){
+  .hs-head{padding:10px 16px !important;gap:12px !important;flex-wrap:nowrap !important}
+  .hs-burger{display:flex}
+  .hs-cta{display:none !important}
+  .hs-nav{display:none !important}
+  .hs-nav[data-open="true"]{display:flex !important;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0 !important;padding:4px 16px 16px;background:rgba(6,7,15,.97);border-bottom:1px solid rgba(140,130,255,.18);box-shadow:0 18px 40px rgba(0,0,0,.5)}
+  .hs-nav[data-open="true"] > a{padding:15px 0 !important;font-size:15px !important;border-bottom:1px solid rgba(140,130,255,.12) !important}
+}
 </style>
 </helmet>
 <div style="min-height:100vh;background:radial-gradient(1200px 600px at 80% -10%,rgba(91,61,255,.16),transparent 60%),#06070f">
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(6,7,15,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(140,130,255,.12)">
-  <div style="max-width:1440px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:32px;flex-wrap:wrap">
-    <div onClick="{{ goHome }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+  <div class="hs-head" style="position:relative;max-width:1440px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+    <a href="#/" onClick="{{ goHome }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
       <div style="font-family:'Archivo Black',sans-serif;font-size:26px;font-style:italic;letter-spacing:-1px;color:#fff">HS</div>
       <div style="display:flex;flex-direction:column;line-height:1">
         <span style="font-weight:800;font-size:15px;letter-spacing:1px;color:#fff">HRUMSTEP</span>
         <span style="font-size:9px;letter-spacing:2px;color:#9a9cb8;margin-top:3px">MOTION DESIGNER</span>
       </div>
-    </div>
-    <nav style="display:flex;gap:clamp(14px,2vw,28px);flex:1 1 0;min-width:0;justify-content:safe center;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none">
+    </a>
+    <button class="hs-burger" type="button" aria-label="Menu" aria-expanded="{{ menuOpen }}" onClick="{{ toggleMenu }}">{{ menuIcon }}</button>
+    <nav class="hs-nav" data-open="{{ menuOpen }}" style="display:flex;gap:clamp(14px,2vw,28px);flex:1 1 0;min-width:0;justify-content:safe center;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none">
       <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
-        <div onClick="{{ n.go }}" style="font-size:12px;font-weight:600;letter-spacing:.6px;cursor:pointer;padding:8px 0;color:{{ n.color }};border-bottom:2px solid {{ n.line }}">{{ n.label }}</div>
+        <a href="{{ n.href }}" onClick="{{ n.go }}" style="font-size:12px;font-weight:600;letter-spacing:.6px;cursor:pointer;padding:8px 0;color:{{ n.color }};border-bottom:2px solid {{ n.line }}">{{ n.label }}</a>
       </sc-for>
     </nav>
-    <div onClick="{{ goContact }}" style="display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;background:linear-gradient(90deg,#5b3dff,#7b4dff);color:#fff;font-size:12px;font-weight:700;letter-spacing:.6px;cursor:pointer;box-shadow:0 6px 24px rgba(91,61,255,.35)" style-hover="filter:brightness(1.15)">LET'S WORK <span>→</span></div>
+    <a class="hs-cta" href="#/contact" style="display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;background:linear-gradient(90deg,#5b3dff,#7b4dff);color:#fff;font-size:12px;font-weight:700;letter-spacing:.6px;cursor:pointer;box-shadow:0 6px 24px rgba(91,61,255,.35)" style-hover="filter:brightness(1.15)">LET'S WORK <span>→</span></a>
   </div>
 </header>
 
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 <main>
   <section style="position:relative;overflow:hidden;border-bottom:1px solid rgba(140,130,255,.1)">
-    <img src="{{ heroSrc }}" alt="" style="position:absolute;right:0;top:0;height:100%;width:62%;object-fit:cover;object-position:center 30%">
+    <img fetchpriority="high" src="{{ heroSrc }}" alt="" style="position:absolute;right:0;top:0;height:100%;width:62%;object-fit:cover;object-position:center 30%">
     <div style="position:absolute;inset:0;background:linear-gradient(90deg,#06070f 38%,rgba(6,7,15,.6) 55%,rgba(6,7,15,0) 75%),linear-gradient(0deg,#06070f 0%,rgba(6,7,15,0) 30%)"></div>
     <div style="position:relative;max-width:1440px;margin:0 auto;padding:96px 32px 72px;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;min-height:600px">
       <div style="max-width:620px">
@@ -68,7 +78,7 @@ img{display:block}
         </div>
         <div style="display:flex;flex-direction:column;gap:10px">
           <sc-for list="{{ heroThumbs }}" as="h" hint-placeholder-count="4">
-            <img src="{{ h.img }}" alt="" onClick="{{ h.go }}" style="width:58px;height:58px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.18);cursor:pointer" style-hover="border-color:#8b7bff">
+            <img loading="lazy" decoding="async" src="{{ h.img }}" alt="" onClick="{{ h.go }}" style="width:58px;height:58px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.18);cursor:pointer" style-hover="border-color:#8b7bff">
           </sc-for>
         </div>
       </div>
@@ -78,7 +88,7 @@ img{display:block}
   <section style="max-width:1440px;margin:0 auto;padding:28px 32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
     <sc-for list="{{ categories }}" as="c" hint-placeholder-count="3">
       <div onClick="{{ c.go }}" style="position:relative;height:200px;border-radius:14px;overflow:hidden;border:1px solid rgba(140,130,255,.18);cursor:pointer" style-hover="border-color:rgba(140,120,255,.7)">
-        <img src="{{ c.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <img loading="lazy" decoding="async" src="{{ c.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
         <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,7,15,.95) 10%,rgba(6,7,15,.2) 70%)"></div>
         <div style="position:absolute;left:20px;right:20px;bottom:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
           <div>
@@ -102,7 +112,7 @@ img{display:block}
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
       <sc-for list="{{ featured }}" as="f" hint-placeholder-count="5">
         <div onClick="{{ f.go }}" style="cursor:pointer" style-hover="transform:translateY(-3px)">
-          <div style="aspect-ratio:1.15;border-radius:10px;overflow:hidden;border:1px solid rgba(140,130,255,.15)"><img src="{{ f.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+          <div style="aspect-ratio:1.15;border-radius:10px;overflow:hidden;border:1px solid rgba(140,130,255,.15)"><img loading="lazy" decoding="async" src="{{ f.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
           <div style="margin-top:14px;font-weight:700;font-size:15px;color:#fff">{{ f.t }}</div>
           <div style="margin-top:4px;font-size:12px;color:#9a9cb8">{{ f.tags }}</div>
         </div>
@@ -111,7 +121,7 @@ img{display:block}
   </section>
 
   <section style="position:relative;overflow:hidden;border-top:1px solid rgba(140,130,255,.1);border-bottom:1px solid rgba(140,130,255,.1);background:#080a17">
-    <img src="img/bunny.png" alt="" style="position:absolute;right:0;top:0;height:100%;width:38%;object-fit:cover;object-position:60% 30%">
+    <img loading="lazy" decoding="async" src="img/bunny.jpg" alt="" style="position:absolute;right:0;top:0;height:100%;width:38%;object-fit:cover;object-position:60% 30%">
     <div style="position:absolute;inset:0;background:linear-gradient(90deg,#080a17 55%,rgba(8,10,23,0) 80%)"></div>
     <div style="position:relative;max-width:1440px;margin:0 auto;padding:52px 32px;display:flex;align-items:center;gap:40px;flex-wrap:wrap">
       <div style="display:flex;gap:40px;flex-wrap:wrap">
@@ -142,7 +152,7 @@ img{display:block}
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
       <sc-for list="{{ aiFiltered }}" as="a" hint-placeholder-count="4">
         <div onClick="{{ goAi }}" style="position:relative;aspect-ratio:1.55;border-radius:12px;overflow:hidden;border:1px solid rgba(140,130,255,.15);cursor:pointer" style-hover="border-color:rgba(140,120,255,.7)">
-          <img src="{{ a.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          <img loading="lazy" decoding="async" src="{{ a.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
           <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,7,15,.92) 5%,rgba(6,7,15,0) 50%)"></div>
           <div style="position:absolute;left:16px;bottom:14px">
             <div style="font-weight:700;font-size:15px;color:#fff">{{ a.short }}</div>
@@ -161,7 +171,7 @@ img{display:block}
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
       <sc-for list="{{ motion }}" as="m" hint-placeholder-count="4">
         <div onClick="{{ goMotion }}" style="cursor:pointer;border-radius:12px;overflow:hidden;border:1px solid rgba(140,130,255,.15);background:#0b0d1c" style-hover="border-color:rgba(140,120,255,.7)">
-          <div style="position:relative;aspect-ratio:2"><img src="{{ m.img }}" alt="" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;top:10px;right:10px;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.6);font-size:12px;color:#fff">{{ m.d }}</div></div>
+          <div style="position:relative;aspect-ratio:2"><img loading="lazy" decoding="async" src="{{ m.img }}" alt="" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;top:10px;right:10px;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.6);font-size:12px;color:#fff">{{ m.d }}</div></div>
           <div style="padding:12px 14px 14px"><div style="font-weight:700;font-size:15px;color:#fff">{{ m.t }}</div><div style="font-size:12px;color:#9a9cb8;margin-top:3px">{{ m.tags }}</div></div>
         </div>
       </sc-for>
@@ -171,7 +181,7 @@ img{display:block}
   <section id="about" style="border-top:1px solid rgba(140,130,255,.1)">
     <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">
       <div style="position:relative;min-height:360px;overflow:hidden">
-        <img src="img/bunnyDesk.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <img loading="lazy" decoding="async" src="img/bunnyDesk.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
         <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,15,0) 60%,#06070f)"></div>
       </div>
       <div style="padding:48px 32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px">
@@ -201,7 +211,7 @@ img{display:block}
   </section>
 
   <section id="contact" style="position:relative;overflow:hidden;border-top:1px solid rgba(140,130,255,.1)">
-    <img src="img/bunny.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;opacity:.55">
+    <img loading="lazy" decoding="async" src="img/bunny.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;opacity:.55">
     <div style="position:absolute;inset:0;background:linear-gradient(90deg,#06070f 30%,rgba(6,7,15,.4) 70%,rgba(6,7,15,.7))"></div>
     <div style="position:relative;max-width:1440px;margin:0 auto;padding:80px 32px 90px">
       <div style="font-size:13px;font-weight:700;letter-spacing:2.5px;color:#8b7bff">LET'S WORK TOGETHER</div>
@@ -239,7 +249,7 @@ img{display:block}
           <span style="flex:1;font-size:20px;font-weight:700;color:#fff">{{ s.t }}</span>
           <span style="padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.2);font-size:12px;color:#fff">{{ s.d }}</span>
         </div>
-        <div style="aspect-ratio:1.6"><img src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+        <div style="aspect-ratio:1.6"><img loading="lazy" decoding="async" src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
         <div style="padding:16px">
           <p style="margin:0;font-size:13px;line-height:1.55;color:#c9cbe0">{{ s.desc }}</p>
           <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">
@@ -265,7 +275,7 @@ img{display:block}
       <div style="display:flex;flex-direction:column;gap:6px">
         <sc-for list="{{ slots }}" as="s" hint-placeholder-count="7">
           <div onClick="{{ s.go }}" style="display:flex;align-items:center;gap:12px;padding:6px;border-radius:10px;cursor:pointer;background:{{ s.selBg }}" style-hover="background:rgba(91,61,255,.14)">
-            <img src="{{ s.img }}" alt="" style="width:96px;height:56px;border-radius:6px;object-fit:cover">
+            <img loading="lazy" decoding="async" src="{{ s.img }}" alt="" style="width:96px;height:56px;border-radius:6px;object-fit:cover">
             <div><div style="font-size:13px;font-weight:600;color:#fff">{{ s.t }}</div><div style="font-size:11px;color:#9a9cb8;margin-top:2px">{{ s.tags }}</div></div>
           </div>
         </sc-for>
@@ -274,7 +284,7 @@ img{display:block}
     <div style="grid-column:span 3;min-width:0;display:flex;flex-direction:column;gap:28px">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px">
         <div style="grid-column:span 2;position:relative;min-height:400px;border-radius:14px;overflow:hidden;border:1px solid rgba(140,130,255,.18)">
-          <img src="{{ proj.img }}" alt="" style="position:absolute;right:0;top:0;width:70%;height:100%;object-fit:cover">
+          <img loading="lazy" decoding="async" src="{{ proj.img }}" alt="" style="position:absolute;right:0;top:0;width:70%;height:100%;object-fit:cover">
           <div style="position:absolute;inset:0;background:linear-gradient(90deg,#090b18 32%,rgba(9,11,24,.5) 55%,rgba(9,11,24,0) 75%)"></div>
           <div style="position:relative;padding:44px 36px;max-width:440px">
             <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:#8b7bff">SLOT / GAME ANIMATION</div>
@@ -304,29 +314,29 @@ img{display:block}
           <div style="font-size:22px;font-weight:700;color:#fff;margin-bottom:16px">Key Elements</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
             <sc-for list="{{ keyEls }}" as="k" hint-placeholder-count="7">
-              <div><div style="aspect-ratio:1.3;border-radius:10px;overflow:hidden;border:1px solid rgba(140,130,255,.15)"><img src="{{ k.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div><div style="margin-top:10px;font-size:13px;font-weight:700;color:#fff">{{ k.t }}</div><div style="font-size:11px;color:#9a9cb8;margin-top:2px">{{ k.s }}</div></div>
+              <div><div style="aspect-ratio:1.3;border-radius:10px;overflow:hidden;border:1px solid rgba(140,130,255,.15)"><img loading="lazy" decoding="async" src="{{ k.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div><div style="margin-top:10px;font-size:13px;font-weight:700;color:#fff">{{ k.t }}</div><div style="font-size:11px;color:#9a9cb8;margin-top:2px">{{ k.s }}</div></div>
             </sc-for>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:28px">
           <div style="padding:20px;border-radius:14px;border:1px solid rgba(140,130,255,.15);background:#0b0d1c">
             <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:14px">Animation Breakdown</div>
-            <img src="img/breakdown.png" alt="" style="width:100%;border-radius:8px">
+            <img loading="lazy" decoding="async" src="img/breakdown.jpg" alt="" style="width:100%;border-radius:8px">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);margin-top:10px;text-align:center;font-size:12px;color:#c9cbe0"><span>Idle</span><span>Anticipation</span><span>Action</span><span>Win</span></div>
           </div>
           <div style="padding:20px;border-radius:14px;border:1px solid rgba(140,130,255,.15);background:#0b0d1c">
             <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:14px">VFX Effects</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-              <sc-for list="{{ vfx }}" as="v" hint-placeholder-count="6"><img src="{{ v }}" alt="" style="width:100%;aspect-ratio:1.05;object-fit:cover;border-radius:8px"></sc-for>
+              <sc-for list="{{ vfx }}" as="v" hint-placeholder-count="6"><img loading="lazy" decoding="async" src="{{ v }}" alt="" style="width:100%;aspect-ratio:1.05;object-fit:cover;border-radius:8px"></sc-for>
             </div>
           </div>
           <div style="padding:20px;border-radius:14px;border:1px solid rgba(140,130,255,.15);background:#0b0d1c">
             <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:14px">Bonus Sequence</div>
-            <img src="img/bonusSeq.png" alt="" style="width:100%;border-radius:8px">
+            <img loading="lazy" decoding="async" src="img/bonusSeq.jpg" alt="" style="width:100%;border-radius:8px">
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
-              <img src="img/kBonus.png" alt="" style="width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:6px">
-              <img src="img/v3.png" alt="" style="width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:6px">
-              <img src="img/v6.png" alt="" style="width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:6px">
+              <img loading="lazy" decoding="async" src="img/kBonus.jpg" alt="" style="width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:6px">
+              <img loading="lazy" decoding="async" src="img/v3.jpg" alt="" style="width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:6px">
+              <img loading="lazy" decoding="async" src="img/v6.jpg" alt="" style="width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:6px">
             </div>
           </div>
         </div>
@@ -350,7 +360,7 @@ img{display:block}
     <sc-for list="{{ motion }}" as="m" hint-placeholder-count="4">
       <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(140,130,255,.15);background:#0b0d1c">
         <div style="position:relative;aspect-ratio:3.6">
-          <img src="{{ m.img }}" alt="" style="width:100%;height:100%;object-fit:cover">
+          <img loading="lazy" decoding="async" src="{{ m.img }}" alt="" style="width:100%;height:100%;object-fit:cover">
           <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,7,15,.85),rgba(6,7,15,0) 35%)"></div>
           <div style="position:absolute;top:14px;left:18px;right:18px;display:flex;align-items:center;gap:14px">
             <span style="font-size:22px;font-weight:700;color:#8b7bff">{{ m.n }}</span>
@@ -389,7 +399,7 @@ img{display:block}
     <sc-for list="{{ aiFiltered }}" as="a" hint-placeholder-count="6">
       <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(140,130,255,.15);background:#0b0d1c">
         <div style="position:relative;aspect-ratio:2.3">
-          <img src="{{ a.img }}" alt="" style="width:100%;height:100%;object-fit:cover">
+          <img loading="lazy" decoding="async" src="{{ a.img }}" alt="" style="width:100%;height:100%;object-fit:cover">
           <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,7,15,.85),rgba(6,7,15,0) 35%)"></div>
           <div style="position:absolute;top:12px;left:16px;right:16px;display:flex;align-items:center;gap:12px">
             <span style="font-size:20px;font-weight:700;color:#8b7bff">{{ a.n }}</span>
@@ -419,50 +429,71 @@ img{display:block}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;heroImage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Anubis&quot;,&quot;Bunny&quot;],&quot;default&quot;:&quot;Anubis&quot;,&quot;tsType&quot;:&quot;'Anubis'|'Bunny'&quot;}}">
 const SLOTS=[
-{t:'Egyptian Slot',img:'img/eg.png',tags:'Symbols · VFX · UI',d:'0:15',desc:'Symbols, character animation, bonus sequence and VFX for an Egyptian themed slot game.',chips:['Spine 2D','Animation','VFX','Game Art']},
-{t:'Fantasy Slot',img:'img/dragon.png',tags:'Symbols · Character',d:'0:12',desc:'High-quality symbol animations, character animation and win effects for a fantasy slot game.',chips:['Spine 2D','Animation','VFX','Character']},
-{t:'Luxury Casino',img:'img/lion.png',tags:'Symbols · Win · UI',d:'0:14',desc:'Premium symbols and win animations with high-end visual style for a luxury casino slot game.',chips:['Spine 2D','Animation','VFX','UI']},
-{t:'Character / Hero',img:'img/hero.png',tags:'Character · VFX',d:'0:15',desc:'Full character animation cycle, idle, win and special effects for a hero character.',chips:['Spine 2D','Character','Animation','VFX']},
-{t:'Bonus Feature',img:'img/bonus.png',tags:'Bonus · UI · VFX',d:'0:15',desc:'Full bonus sequence animation including UI, transitions, VFX and win celebration.',chips:['Spine 2D','Animation','VFX','UI']},
-{t:'Animal Slot',img:'img/wolf.png',tags:'Symbols · Character',d:'0:11',desc:'Animated animal symbols with dynamic effects for a wildlife themed slot game.',chips:['Spine 2D','Animation','VFX','Game Art']},
-{t:'Asian Slot',img:'img/asian.png',tags:'Symbols · VFX',d:'0:13',desc:'Symbols, character animation and vibrant win effects for an Asian themed slot game.',chips:['Spine 2D','Animation','VFX','Game Art']}];
+{t:'Egyptian Slot',img:'img/eg.jpg',tags:'Symbols · VFX · UI',d:'0:15',desc:'Symbols, character animation, bonus sequence and VFX for an Egyptian themed slot game.',chips:['Spine 2D','Animation','VFX','Game Art']},
+{t:'Fantasy Slot',img:'img/dragon.jpg',tags:'Symbols · Character',d:'0:12',desc:'High-quality symbol animations, character animation and win effects for a fantasy slot game.',chips:['Spine 2D','Animation','VFX','Character']},
+{t:'Luxury Casino',img:'img/lion.jpg',tags:'Symbols · Win · UI',d:'0:14',desc:'Premium symbols and win animations with high-end visual style for a luxury casino slot game.',chips:['Spine 2D','Animation','VFX','UI']},
+{t:'Character / Hero',img:'img/hero.jpg',tags:'Character · VFX',d:'0:15',desc:'Full character animation cycle, idle, win and special effects for a hero character.',chips:['Spine 2D','Character','Animation','VFX']},
+{t:'Bonus Feature',img:'img/bonus.jpg',tags:'Bonus · UI · VFX',d:'0:15',desc:'Full bonus sequence animation including UI, transitions, VFX and win celebration.',chips:['Spine 2D','Animation','VFX','UI']},
+{t:'Animal Slot',img:'img/wolf.jpg',tags:'Symbols · Character',d:'0:11',desc:'Animated animal symbols with dynamic effects for a wildlife themed slot game.',chips:['Spine 2D','Animation','VFX','Game Art']},
+{t:'Asian Slot',img:'img/asian.jpg',tags:'Symbols · VFX',d:'0:13',desc:'Symbols, character animation and vibrant win effects for an Asian themed slot game.',chips:['Spine 2D','Animation','VFX','Game Art']}];
 const AI=[
-{t:'Red Bull — Extreme Sports',short:'Red Bull — Break the Limit',cat:'Sports',img:'img/redbull.png',d:'0:15',desc:'High-energy commercial with multiple sports scenes: skydiving, skateboarding and mountain biking. Fully AI-generated with cinematic style.'},
-{t:'Formula 1 — Speed Unleashed',short:'Formula 1 — Speed',cat:'Automotive',img:'img/f1.png',d:'0:20',desc:'Cinematic commercial for Formula 1. High-speed shots, dynamic camera movements and dramatic atmosphere.'},
-{t:'Automotive — Future Drive',short:'Automotive — Future Drive',cat:'Automotive',img:'img/car.png',d:'0:18',desc:'Premium automotive commercial. Product showcase with cinematic visuals, dynamic shots and realistic lighting.'},
-{t:'Gaming / Casino — Big Win',short:'Casino — Big Win',cat:'Gaming',img:'img/bigwin.png',d:'0:15',desc:'Advertising video for an online casino game. Cinematic AI visuals, character animation and win celebration.'},
-{t:'Product — Energy Drink',short:'Energy Drink',cat:'Product',img:'img/drink.png',d:'0:12',desc:'Short product commercial with cinematic product shots, slow motion and dynamic transitions.'},
-{t:'Outdoor / Action — Mountain Bike',short:'Mountain Bike',cat:'Sports',img:'img/bike.png',d:'0:17',desc:'Cinematic outdoor commercial with mountain biking, landscape shots and dynamic editing.'}];
+{t:'Red Bull — Extreme Sports',short:'Red Bull — Break the Limit',cat:'Sports',img:'img/redbull.jpg',d:'0:15',desc:'High-energy commercial with multiple sports scenes: skydiving, skateboarding and mountain biking. Fully AI-generated with cinematic style.'},
+{t:'Formula 1 — Speed Unleashed',short:'Formula 1 — Speed',cat:'Automotive',img:'img/f1.jpg',d:'0:20',desc:'Cinematic commercial for Formula 1. High-speed shots, dynamic camera movements and dramatic atmosphere.'},
+{t:'Automotive — Future Drive',short:'Automotive — Future Drive',cat:'Automotive',img:'img/car.jpg',d:'0:18',desc:'Premium automotive commercial. Product showcase with cinematic visuals, dynamic shots and realistic lighting.'},
+{t:'Gaming / Casino — Big Win',short:'Casino — Big Win',cat:'Gaming',img:'img/bigwin.jpg',d:'0:15',desc:'Advertising video for an online casino game. Cinematic AI visuals, character animation and win celebration.'},
+{t:'Product — Energy Drink',short:'Energy Drink',cat:'Product',img:'img/drink.jpg',d:'0:12',desc:'Short product commercial with cinematic product shots, slow motion and dynamic transitions.'},
+{t:'Outdoor / Action — Mountain Bike',short:'Mountain Bike',cat:'Sports',img:'img/bike.jpg',d:'0:17',desc:'Cinematic outdoor commercial with mountain biking, landscape shots and dynamic editing.'}];
 const MOTION=[
-{t:'Kinetic Typography',img:'img/kinetic.png',d:'0:15',tags:'Typography · After Effects · VFX',desc:'Dynamic typography animation with powerful transitions and modern graphic style. Perfect for sports and brand campaigns.',chips:['Typography','Animation','VFX','After Effects']},
-{t:'Product / App Promo',img:'img/app.png',d:'0:18',tags:'Product · UI · Motion Design',desc:'Modern product video for a mobile app. Clean transitions, 3D elements, UI animation and smooth motion graphics.',chips:['Product','UI Animation','3D Elements','After Effects']},
-{t:'Logo Animation / Ident',img:'img/logo.png',d:'0:12',tags:'Logo · Particles · After Effects',desc:'Cinematic logo animation with particles, light effects and stylish transitions. Suitable for brand identity, intro and outro videos.',chips:['Logo Animation','VFX','Particles','Branding']},
-{t:'Explainer / UI Motion',img:'img/explainer.png',d:'0:16',tags:'UI · Animation · After Effects',desc:'Explainer video with clean illustrations, UI elements and smooth animations. Great for SaaS, apps and online services.',chips:['Explainer','UI Animation','3D Elements','Motion Design']}];
+{t:'Kinetic Typography',img:'img/kinetic.jpg',d:'0:15',tags:'Typography · After Effects · VFX',desc:'Dynamic typography animation with powerful transitions and modern graphic style. Perfect for sports and brand campaigns.',chips:['Typography','Animation','VFX','After Effects']},
+{t:'Product / App Promo',img:'img/app.jpg',d:'0:18',tags:'Product · UI · Motion Design',desc:'Modern product video for a mobile app. Clean transitions, 3D elements, UI animation and smooth motion graphics.',chips:['Product','UI Animation','3D Elements','After Effects']},
+{t:'Logo Animation / Ident',img:'img/logo.jpg',d:'0:12',tags:'Logo · Particles · After Effects',desc:'Cinematic logo animation with particles, light effects and stylish transitions. Suitable for brand identity, intro and outro videos.',chips:['Logo Animation','VFX','Particles','Branding']},
+{t:'Explainer / UI Motion',img:'img/explainer.jpg',d:'0:16',tags:'UI · Animation · After Effects',desc:'Explainer video with clean illustrations, UI elements and smooth animations. Great for SaaS, apps and online services.',chips:['Explainer','UI Animation','3D Elements','Motion Design']}];
 const TOOLS=[['Sp','Spine 2D','#2a0d0d','#ff5a4a'],['Ae','After Effects','#1a1240','#a99cff'],['Ps','Photoshop','#081a2e','#31a8ff'],['Ai','Illustrator','#2a1606','#ff9a00'],['Pr','Premiere Pro','#1a1240','#c9a6ff'],['Bl','Blender','#2a1606','#ff8a1f'],['AI','AI Tools','#14162a','#e9eaf5'],['Fg','Figma','#14162a','#ff7262']].map(([s,name,bg,fg])=>({s,name,bg,fg}));
-const NAV=[['HOME','home'],['SPINE 2D','spine'],['MOTION DESIGN','motion'],['AI COMMERCIALS','ai'],['ABOUT','#about'],['CONTACT','#contact']];
+const NAV=[['HOME','home'],['SPINE 2D','spine'],['MOTION DESIGN','motion'],['AI COMMERCIALS','ai'],['ABOUT','about'],['CONTACT','contact']];
+const slug=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const PAGES=['spine','motion','ai'],ANCHORS=['about','contact'];
+const routeHash=r=>'#/'+(r==='home'?'':r);
 class Component extends DCLogic {
-  state={page:'home',proj:0,cat:'All'};
-  go=(p)=>{this.setState({page:p});window.scrollTo(0,0);};
-  goAnchor=(id)=>{this.setState({page:'home'},()=>setTimeout(()=>{const el=document.getElementById(id);if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-70,behavior:'smooth'});},60));};
-  openProj=(i)=>{this.setState({page:'project',proj:i});window.scrollTo(0,0);};
+  state={page:'home',proj:0,cat:'All',menu:false};
+  parseHash(){
+    const [p,s]=location.hash.replace(/^#\/?/,'').split('/');
+    if(p==='project'){const i=SLOTS.findIndex(x=>slug(x.t)===s);return {page:'project',proj:i<0?0:i};}
+    if(PAGES.includes(p))return {page:p};
+    return {page:'home',anchor:ANCHORS.includes(p)?p:null};
+  }
+  sync=()=>{
+    const r=this.parseHash();
+    this.setState({page:r.page,proj:r.proj??this.state.proj,menu:false},()=>setTimeout(()=>{
+      const el=r.anchor&&document.getElementById(r.anchor);
+      if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-70,behavior:'smooth'});
+      else window.scrollTo(0,0);
+    },60));
+  };
+  componentDidMount(){window.addEventListener('hashchange',this.sync);if(location.hash)this.sync();}
+  componentWillUnmount(){window.removeEventListener('hashchange',this.sync);}
+  nav=(r)=>{const h=routeHash(r);if(location.hash===h||(r==='home'&&!location.hash))this.sync();else location.hash=h;};
+  go=(p)=>this.nav(p);
+  goAnchor=(id)=>this.nav(id);
+  openProj=(i)=>this.nav('project/'+slug(SLOTS[i].t));
   renderVals(){
-    const {page,proj,cat}=this.state;
+    const {page,proj,cat,menu}=this.state;
     const pad=i=>String(i+1).padStart(2,'0');
     const slots=SLOTS.map((s,i)=>({...s,n:pad(i),go:()=>this.openProj(i),selBg:page==='project'&&i===proj?'rgba(91,61,255,.22)':'transparent'}));
     const ai=AI.map((a,i)=>({...a,n:pad(i)}));
     const activeNav=page==='project'?'spine':page;
     return {
-      nav:NAV.map(([label,k])=>({label,go:()=>k[0]==='#'?this.goAnchor(k.slice(1)):this.go(k),color:k===activeNav?'#8b7bff':'#d6d7ea',line:k===activeNav?'#8b7bff':'transparent'})),
+      nav:NAV.map(([label,k])=>({label,href:routeHash(k),go:(e)=>{e.preventDefault();this.nav(k);},color:k===activeNav?'#8b7bff':'#d6d7ea',line:k===activeNav?'#8b7bff':'transparent'})),
+      menuOpen:menu,menuIcon:menu?'✕':'☰',toggleMenu:()=>this.setState({menu:!menu}),
       isHome:page==='home',isSpine:page==='spine',isMotion:page==='motion',isAi:page==='ai',isProject:page==='project',
       goHome:()=>this.go('home'),goSpine:()=>this.go('spine'),goMotion:()=>this.go('motion'),goAi:()=>this.go('ai'),goContact:()=>this.goAnchor('contact'),
-      heroSrc:(this.props.heroImage??'Anubis')==='Bunny'?'img/bunny.png':'img/anubisHero.png',
+      heroSrc:(this.props.heroImage??'Anubis')==='Bunny'?'img/bunny.jpg':'img/anubisHero.jpg',
       heroThumbs:[0,1,3,2].map(i=>({img:SLOTS[i].img,go:()=>this.openProj(i)})),
       tools:TOOLS,
       heroTools:TOOLS.filter(t=>t.name!=='Blender'),
       categories:[
-        {k:'SPINE 2D',t:'GAME ANIMATION',tags:'Slot games · Characters · VFX · UI',img:'img/eg.png',go:()=>this.go('spine')},
-        {k:'MOTION DESIGN',t:'AFTER EFFECTS',tags:'Typography · Product Promo · Logo · UI',img:'img/app.png',go:()=>this.go('motion')},
-        {k:'AI COMMERCIALS',t:'& ADVERTISING',tags:'Sports · Automotive · Product · Social',img:'img/redbull.png',go:()=>this.go('ai')}],
+        {k:'SPINE 2D',t:'GAME ANIMATION',tags:'Slot games · Characters · VFX · UI',img:'img/eg.jpg',go:()=>this.go('spine')},
+        {k:'MOTION DESIGN',t:'AFTER EFFECTS',tags:'Typography · Product Promo · Logo · UI',img:'img/app.jpg',go:()=>this.go('motion')},
+        {k:'AI COMMERCIALS',t:'& ADVERTISING',tags:'Sports · Automotive · Product · Social',img:'img/redbull.jpg',go:()=>this.go('ai')}],
       featured:[...[0,1,2,3].map(i=>({t:SLOTS[i].t,img:SLOTS[i].img,tags:'Spine 2D · '+SLOTS[i].tags,go:()=>this.openProj(i)})),{t:AI[0].short,img:AI[0].img,tags:'AI Video · After Effects · Compositing',go:()=>this.go('ai')}],
       stats:[{v:'5+',l:'YEARS\nEXPERIENCE'},{v:'20+',l:'COMPLETED\nPROJECTS'},{v:'10+',l:'HAPPY\nCLIENTS'}],
       aiChips:['All','Sports','Automotive','Product','Gaming'].map(c=>({label:c.toUpperCase(),go:()=>this.setState({cat:c}),bg:c===cat?'#5b3dff':'transparent',bd:c===cat?'#5b3dff':'rgba(255,255,255,.18)'})),
@@ -473,10 +504,10 @@ class Component extends DCLogic {
       spineTags:['Spine 2D','Animation','VFX','Game Art','UI'],
       slots, proj:slots[proj], hasDetail:proj===0,
       projCounter:pad(proj)+' / 07',
-      prevProj:()=>this.setState({proj:(proj+6)%7}),nextProj:()=>this.setState({proj:(proj+1)%7}),
+      prevProj:()=>this.openProj((proj+6)%7),nextProj:()=>this.openProj((proj+1)%7),
       overview:[{k:'CLIENT',v:'Confidential'},{k:'ROLE',v:'2D Animation, VFX, UI Animation'},{k:'TOOLS',v:'Spine 2D · Photoshop · Illustrator · After Effects'},{k:'DURATION',v:'2 weeks'}],
-      keyEls:[['kChar','Main Character','Idle · Action · Win'],['kScatter','Scatter','Trigger · Win · Loop'],['kWild','Wild Symbol','Animation · VFX'],['kHigh','High Value Symbol','Animation · Glow'],['kLow','Low Value Symbols','Various animations'],['kUi','UI Elements','Panels · Buttons · Effects'],['kBonus','Bonus Sequence','Full animation flow']].map(([f,t,s])=>({img:'img/'+f+'.png',t,s})),
-      vfx:['v1','v2','v3','v4','v5','v6'].map(v=>'img/'+v+'.png')
+      keyEls:[['kChar','Main Character','Idle · Action · Win'],['kScatter','Scatter','Trigger · Win · Loop'],['kWild','Wild Symbol','Animation · VFX'],['kHigh','High Value Symbol','Animation · Glow'],['kLow','Low Value Symbols','Various animations'],['kUi','UI Elements','Panels · Buttons · Effects'],['kBonus','Bonus Sequence','Full animation flow']].map(([f,t,s])=>({img:'img/'+f+'.jpg',t,s})),
+      vfx:['v1','v2','v3','v4','v5','v6'].map(v=>'img/'+v+'.jpg')
     };
   }
 }
